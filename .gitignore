@@ -1,37 +1,59 @@
-# Logs
-logs
-*.log
+# dependencies
+/node_modules
+node_modules
+
+# build output
+/build
+/dist
+
+# system files
+.DS_Store
+Thumbs.db
+
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-# Runtime & build output
-node_modules/
-dist/
-dist-ssr/
-*.local
-
-# dotenv environment variable files
+# local env files
 .env
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local
-.env.local
 
-# OS files
-.DS_Store
+# testing coverage
+/coverage
 
-# IDEs and editors
+# editor settings
 .vscode/
-!.vscode/extensions.json
 .idea/
 *.suo
-.ntvs
+*.ntvs*
 *.njsproj
 *.sln
-*.sw?
 
-# Prisma generated files
-/generated/prisma/
+# parcel-bundler cache
+.cache
+
+# optional lock files (you may keep one)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# firebase cache
+.firebase/
+
+# next.js
+.next/
+
+# vercel
+.vercel/
+
+# storybook
+.out/
+.storybook-out/
+
+# Mac
+*.DS_Store
