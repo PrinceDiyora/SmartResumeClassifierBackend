@@ -1,4 +1,4 @@
-# Logs
+# Logs eadsa
 logs
 *.log
 npm-debug.log*
@@ -7,21 +7,31 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Runtime & build output
+node_modules/
+dist/
+dist-ssr/
 *.local
 
-# testing coverage
-/coverage
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
 
-# editor settings
+# OS files
+.DS_Store
+
+# IDEs and editors
 .vscode/
+!.vscode/extensions.json
 .idea/
 *.suo
-*.ntvs*
+.ntvs
 *.njsproj
 *.sln
 *.sw?
 
-/generated/prisma
+# Prisma generated files
+/generated/prisma/
