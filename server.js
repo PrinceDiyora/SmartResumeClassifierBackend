@@ -3,6 +3,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const compileRoutes = require('./routes/compileRoutes')
 const authRoutes = require('./routes/authRoutes')
+const resumeRoutes = require('./routes/resumeRoutes')
+const atsRoutes = require('./routes/analyzeRoutes')
 const app = express()
 const port = 3000
 
@@ -16,6 +18,8 @@ app.use(bodyParser.json({ limit: "5mb" }));
 
 app.use('/api', compileRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/resumes', resumeRoutes)
+app.use('/api/analyze', atsRoutes)
 
 
 app.listen(port, () => {

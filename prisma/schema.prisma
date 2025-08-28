@@ -19,5 +19,17 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
+  resumes  Resume[] // relation to Resume
   createdAt DateTime @default(now())
+}
+
+model Resume {
+  id         String   @id @default(uuid())
+  userId     Int
+  title      String   // "My Resume for Google"
+  content    String   // LaTeX or JSON
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user       User     @relation(fields: [userId], references: [id])
 }
