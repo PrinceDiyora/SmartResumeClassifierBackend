@@ -46,18 +46,15 @@ exports.compileAndSave = async (req, res) => {
         const pdfFilePath = path.join(tempDir, 'resume.pdf');
         fs.writeFileSync(texFilePath, code);
 
-        const command = `"C:\\Tectonic\\tectonic.exe" --keep-intermediates -o ${tempDir} ${texFilePath}`;
+        const tempDirDocker = tempDir.replace(/\\/g, '/');
+        const command = `docker run --rm -v ${tempDirDocker}:/work rekka/tectonic tectonic /work/resume.tex --outdir=/work`;
 
         exec(command, (error, stdout, stderr) => {
             console.log('STDOUT:', stdout);
             console.log('STDERR:', stderr);
             if (error) {
                 console.error("LaTeX compilation error", error);
-                return res.status(500).json({
-                    error: "LaTeX compilation failed",
-                    stderr,
-                    stdout,
-                });
+                return res.status(500).json({ error: "LaTeX compilation failed", stderr, stdout });
             }
 
             res.setHeader('x-resume-id', savedResume.id);
@@ -65,6 +62,7 @@ exports.compileAndSave = async (req, res) => {
             res.setHeader("Content-Type", "application/pdf");
             fs.createReadStream(pdfFilePath).pipe(res);
         });
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Server error' });
