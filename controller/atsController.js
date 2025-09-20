@@ -13,11 +13,19 @@ exports.analyzeResume = async (req, res) => {
     }
 
     const resumeBuffer = req.file.buffer;
+    const jobDescription = req.body.jobDescription;
 
     // 2. Use the Model to do the work
     const resumeText = await atsModel.parseResumePdf(resumeBuffer);
-    // Call the new model function that only requires resume text
-    const analysis = await atsModel.getGeneralResumeAnalysis(resumeText);
+    
+    let analysis;
+    if (jobDescription) {
+      // If job description is provided, use job match analysis
+      analysis = await atsModel.getJobMatchAnalysis(resumeText, jobDescription);
+    } else {
+      // Otherwise use general resume analysis
+      analysis = await atsModel.getGeneralResumeAnalysis(resumeText);
+    }
 
     // 3. Send the successful response
     return res.status(200).json(analysis);
