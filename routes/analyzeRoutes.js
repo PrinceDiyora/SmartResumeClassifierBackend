@@ -7,6 +7,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 
 router.post('/ats-score', upload.single("resumeFile"), atsController.analyzeResume);
+router.post('/predict-role', upload.single("resumeFile"), atsController.predictRoleViaService);
 
 
 module.exports = router;
