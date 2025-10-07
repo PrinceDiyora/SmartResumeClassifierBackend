@@ -54,7 +54,22 @@ exports.compileAndSave = async (req, res) => {
             console.log('STDERR:', stderr);
             if (error) {
                 console.error("LaTeX compilation error", error);
-                return res.status(500).json({ error: "LaTeX compilation failed", stderr, stdout });
+                console.log('Sending error response with stderr:', stderr);
+                console.log('Sending error response with stdout:', stdout);
+                
+                // Clean up temp directory
+                try {
+                    fs.rmSync(tempDir, { recursive: true, force: true });
+                } catch (cleanupError) {
+                    console.error('Cleanup error:', cleanupError);
+                }
+                
+                res.setHeader("Content-Type", "application/json");
+                return res.status(500).json({ 
+                    error: "LaTeX compilation failed", 
+                    stderr: stderr || 'No stderr available', 
+                    stdout: stdout || 'No stdout available'
+                });
             }
 
             res.setHeader('x-resume-id', savedResume.id);
