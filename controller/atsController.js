@@ -35,3 +35,35 @@ exports.analyzeResume = async (req, res) => {
     return res.status(500).json({ error: "An internal server error occurred." });
   }
 }
+
+/**
+ * Calls external ML service to predict role from resume text.
+ * Expects a single file field named `resumeFile`.
+ */
+exports.predictRoleViaService = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "Resume file is required." });
+    }
+
+    const resumeText = await atsModel.parseResumePdf(req.file.buffer);
+    const serviceUrl = process.env.ML_SERVICE_URL || 'http://localhost:8000/predict';
+
+    const response = await fetch(serviceUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: resumeText })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return res.status(502).json({ error: 'ML service error', details: errText });
+    }
+
+    const result = await response.json();
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('Predict service error:', error);
+    return res.status(500).json({ error: 'Failed to call ML service' });
+  }
+}
