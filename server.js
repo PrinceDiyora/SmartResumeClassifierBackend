@@ -10,6 +10,9 @@ const resumeInfoRoutes = require('./routes/resumeInfoRoutes');
 const app = express()
 const port = 5000
 
+console.log("DATABASE_URL from Render:", process.env.DATABASE_URL);
+
+
 app.use(cors({
     origin: [
         "http://localhost:5173",
