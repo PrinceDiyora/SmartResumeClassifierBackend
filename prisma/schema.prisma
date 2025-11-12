@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
+  id          String          @id @default(uuid())
   email       String       @unique
   password    String
   resumes     Resume[]
@@ -53,7 +53,7 @@ model ResumeInfo {
 }
 
 model Skill {
-  id           Int    @id @default(autoincrement())
+  id           String    @id @default(uuid())
   resumeInfoId String
   name         String
 
