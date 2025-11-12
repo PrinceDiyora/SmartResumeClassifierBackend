@@ -47,7 +47,7 @@ exports.predictRoleViaService = async (req, res) => {
     }
 
     const resumeText = await atsModel.parseResumePdf(req.file.buffer);
-    const serviceUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000/predict';
+    const serviceUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000/predict' || 'https://smartresumeclassifiermlservice.onrender.com';
     // console.log("Connecting to:", serviceUrl);
 
     const response = await fetch(serviceUrl, {
