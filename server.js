@@ -26,6 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(bodyParser.json({ limit: "5mb" }));
 
+app.get('/health', (req, res) => {
+    res.send('Smart Resume Classifier Backend is running')
+})
 app.use('/api', compileRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/resumes', resumeRoutes)
