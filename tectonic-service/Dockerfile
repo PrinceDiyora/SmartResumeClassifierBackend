@@ -13,28 +13,25 @@ COPY . .
 # -----------------------------------
 FROM debian:bullseye-slim AS tectonic-build
 
-RUN apt-get update && apt-get install -y curl xz-utils
+RUN apt-get update && apt-get install -y curl tar gzip
 
-# Download Tectonic 0.15.0
+# Download Tectonic .tar.gz
 RUN curl -L \
-  https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.xz \
-  -o tectonic.tar.xz
+  https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz \
+  -o tectonic.tar.gz
 
 # Extract
-RUN tar -xf tectonic.tar.xz && \
+RUN tar -xzf tectonic.tar.gz && \
     mv tectonic-0.15.0-x86_64-unknown-linux-gnu/tectonic /usr/local/bin/tectonic
 
 # -----------------------------------
-# Stage 3: FINAL RUNTIME
+# Stage 3: Final Runtime
 # -----------------------------------
 FROM node:18-slim
 
 WORKDIR /app
 
-# Copy Node app
 COPY --from=node-build /app /app
-
-# Copy Tectonic binary
 COPY --from=tectonic-build /usr/local/bin/tectonic /usr/local/bin/tectonic
 
 RUN chmod +x /usr/local/bin/tectonic
